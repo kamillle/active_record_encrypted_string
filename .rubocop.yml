@@ -1,0 +1,10 @@
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - '**/Rakefile'
+  TargetRubyVersion: 2.7
+  DisplayCopNames: true
+  NewCops: enable
+
+Layout/LineLength:
+  Enabled: false
