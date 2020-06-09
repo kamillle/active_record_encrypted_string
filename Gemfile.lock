@@ -3,6 +3,7 @@ PATH
   specs:
     active_record_string_encryption (0.1.0)
       activerecord (>= 5.0, < 7)
+      activesupport (< 7)
 
 GEM
   remote: https://rubygems.org/
