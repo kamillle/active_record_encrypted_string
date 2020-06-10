@@ -2,6 +2,9 @@
 
 require 'bundler/setup'
 require 'active_record_string_encryption'
+require 'rspec-parameterized'
+
+Dir.glob('./spec/support/**/*.rb').sort.each { |f| require f }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
