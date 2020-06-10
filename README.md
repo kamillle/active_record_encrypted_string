@@ -1,6 +1,8 @@
 # ActiveRecordStringEncryption
 Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.
 
+Support ActiveRecord 5.0 and later.
+
 ## Installation
 
 Add this line to your application's Gemfile:
