@@ -8,12 +8,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['kamillle']
   spec.email         = ['32205171+kamillle@users.noreply.github.com']
 
-  spec.summary       = 'Write a short summary, because RubyGems requires one.'
-  spec.description   = 'Write a longer description or delete this line.'
+  spec.summary       = 'Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.'
+  spec.description   = 'Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.'
   spec.homepage      = 'https://github.com/kamillle/active_record_string_encryption'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
-
-  spec.metadata['allowed_push_host'] = "Set to 'http://mygemserver.com'"
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/kamillle/active_record_string_encryption'
