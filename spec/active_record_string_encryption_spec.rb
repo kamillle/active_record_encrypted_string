@@ -7,11 +7,34 @@ RSpec.describe ActiveRecordStringEncryption do
     end
   end
 
+  describe '.configure' do
+    subject(:configuration) do
+      ActiveRecordStringEncryption.configure do |c|
+        c.secret_key = secret_key
+        c.salt = salt
+      end
+      ActiveRecordStringEncryption.configuration
+    end
+
+    let(:secret_key) { 'secret_key' }
+    let(:salt) { 'salt' }
+
+    it do
+      expect(configuration.secret_key).to eq secret_key
+      expect(configuration.salt).to eq salt
+    end
+  end
+
   describe 'encryption and decryption' do
     before(:all) do
       ActiveRecord::Base.connection.create_table('dummys') do |t|
         t.string :plain
         t.string :encrypted
+      end
+
+      ActiveRecordStringEncryption.configure do |c|
+        c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
+        c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
       end
     end
 
