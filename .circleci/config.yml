@@ -1,0 +1,47 @@
+common: &common
+  working_directory: ~/workspace
+  parallelism: 1
+  resource_class: small
+  environment:
+    CI: 1
+  docker:
+    - image: circleci/ruby:2.7.1
+  steps:
+    - checkout
+
+    - restore_cache:
+        keys:
+          - bundle-v1-{{ checksum "active_record_string_encryption.gemspec.gemspec" }}
+          - bundle-v1-
+
+    - run:
+        name: Build gem dependencies
+        command: |
+          bundle lock
+          bundle config --local path '.bundle'
+          bundle check || bundle install --jobs 4
+          bundle clean
+
+    - save_cache:
+        key: bundle-v1-{{ checksum "active_record_string_encryption.gemspec.gemspec" }}
+        paths:
+          - .bundle
+
+    - run:
+        name: Run tests
+        command: bundle exec spec
+
+    - run:
+        name: Run rubocop
+        command: bin/rubocop
+
+version: 2.1
+jobs:
+  test:
+    <<: *common
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - test
