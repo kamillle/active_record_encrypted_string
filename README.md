@@ -1,8 +1,5 @@
 # ActiveRecordStringEncryption
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/active_record_string_encryption`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.
 
 ## Installation
 
@@ -14,15 +11,31 @@ gem 'active_record_string_encryption'
 
 And then execute:
 
-    $ bundle install
+```shell
+bundle install
+```
 
-Or install it yourself as:
-
-    $ gem install active_record_string_encryption
 
 ## Usage
 
-TODO: Write usage instructions here
+Call ActiveRecord::Attribute API and specify `:encrypt_string` as type, then your database has encrypted value and application can get plain value.
+
+```ruby
+class User < ActiveRecord::Base
+  attribute :name, :encrypt_string
+end
+```
+
+Must configure secret_key and salt for encryption and decryption. You can also configure algorithm, pass the value to `cipher_alg`. `cipher_alg` has default value `aes-256-gcm` so you do not need to configure if you want to use `aes-256-gcm`.
+
+```ruby
+# config/initializers/active_record_string_encryption.rb
+ActiveRecordStringEncryption.configure do |c|
+  c.secret_key = ENV['ENCRYPTION_SECRET_KEY'],
+  c.salt = ENV['ENCRYPTION_SECRET_KEY'],
+  c.cipher_alg = 'aes-256-gcm'
+end
+```
 
 ## Development
 
