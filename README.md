@@ -34,7 +34,7 @@ Must configure secret_key and salt for encryption and decryption. You can also c
 # config/initializers/active_record_string_encryption.rb
 ActiveRecordStringEncryption.configure do |c|
   c.secret_key = ENV['ENCRYPTION_SECRET_KEY'],
-  c.salt = ENV['ENCRYPTION_SECRET_KEY'],
+  c.salt = ENV['ENCRYPTION_SALT'],
   c.cipher_alg = 'aes-256-gcm'
 end
 ```
