@@ -2,8 +2,11 @@
 
 module ActiveRecordStringEncryption
   class EncryptString < ActiveRecord::Type::String
-    CIPHER_ALG = 'aes-256-gcm'
-    CIPHER_KEY_LENGTH = ActiveSupport::MessageEncryptor.key_len(CIPHER_ALG)
+    class << self
+      def key_len
+        ActiveSupport::MessageEncryptor.key_len(ActiveRecordStringEncryption.configuration.cipher_alg)
+      end
+    end
 
     # ActiveRecord calls `serialize` to convert Ruby objects to a format that can be understood by database
     def serialize(value)
@@ -25,11 +28,11 @@ module ActiveRecordStringEncryption
 
     def encryptor
       # TODO: rotate
-      ActiveSupport::MessageEncryptor.new(secret, cipher: CIPHER_ALG)
+      ActiveSupport::MessageEncryptor.new(secret, cipher: ActiveRecordStringEncryption.configuration.cipher_alg)
     end
 
     def secret
-      ActiveSupport::KeyGenerator.new(secret_key).generate_key(salt, CIPHER_KEY_LENGTH)
+      ActiveSupport::KeyGenerator.new(secret_key).generate_key(salt, self.class.key_len)
     end
 
     def secret_key

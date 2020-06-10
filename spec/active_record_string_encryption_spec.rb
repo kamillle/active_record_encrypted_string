@@ -8,20 +8,42 @@ RSpec.describe ActiveRecordStringEncryption do
   end
 
   describe '.configure' do
-    subject(:configuration) do
-      ActiveRecordStringEncryption.configure do |c|
-        c.secret_key = secret_key
-        c.salt = salt
-      end
-      ActiveRecordStringEncryption.configuration
-    end
-
     let(:secret_key) { 'secret_key' }
     let(:salt) { 'salt' }
 
-    it do
-      expect(configuration.secret_key).to eq secret_key
-      expect(configuration.salt).to eq salt
+    context 'do not pass cipher_alg' do
+      subject(:configuration) do
+        ActiveRecordStringEncryption.configure do |c|
+          c.secret_key = secret_key
+          c.salt = salt
+        end
+        ActiveRecordStringEncryption.configuration
+      end
+
+      it do
+        expect(configuration.secret_key).to eq secret_key
+        expect(configuration.salt).to eq salt
+        expect(configuration.cipher_alg).to eq 'aes-256-gcm'
+      end
+    end
+
+    context 'pass cipher_alg' do
+      subject(:configuration) do
+        ActiveRecordStringEncryption.configure do |c|
+          c.secret_key = secret_key
+          c.salt = salt
+          c.cipher_alg = cipher_alg
+        end
+        ActiveRecordStringEncryption.configuration
+      end
+
+      let(:cipher_alg) { 'aes-256-cbc' }
+
+      it do
+        expect(configuration.secret_key).to eq secret_key
+        expect(configuration.salt).to eq salt
+        expect(configuration.cipher_alg).to eq cipher_alg
+      end
     end
   end
 
