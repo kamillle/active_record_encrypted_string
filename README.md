@@ -8,7 +8,7 @@ Support ActiveRecord 5.0 and later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'active_record_encrypted_string'
+gem 'active_record_encrypted_string', '>= 1'
 ```
 
 And then execute:
