@@ -17,7 +17,7 @@ module ActiveRecordStringEncryption
 end
 
 ActiveSupport.on_load(:active_record) do
-  require 'active_record_string_encryption/encrypt_string'
+  require 'active_record_string_encryption/encrypted_string'
 
-  ActiveRecord::Type.register(:encrypt_string, ActiveRecordStringEncryption::EncryptString)
+  ActiveRecord::Type.register(:encrypted_string, ActiveRecordStringEncryption::EncryptedString)
 end

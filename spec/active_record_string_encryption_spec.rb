@@ -64,7 +64,7 @@ RSpec.describe ActiveRecordStringEncryption do
       Class.new(ActiveRecord::Base) do
         self.table_name = 'dummys'
 
-        attribute :encrypted, :encrypt_string
+        attribute :encrypted, :encrypted_string
       end
     end
     let(:instance) { dummy_klass.new(plain: plain, encrypted: value) }

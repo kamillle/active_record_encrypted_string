@@ -1,5 +1,5 @@
 # ActiveRecordStringEncryption
-Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.
+Generates encrypted_string type that transparently encrypt and decrypt string value to ActiveRecord.
 
 Support ActiveRecord 5.0 and later.
 
@@ -20,11 +20,11 @@ bundle install
 
 ## Usage
 
-Call ActiveRecord::Attribute API and specify `:encrypt_string` as type, then your database has encrypted value and application can get plain value.
+Call ActiveRecord::Attribute API and specify `:encrypted_string` as type, then your database has encrypted value and application can get plain value.
 
 ```ruby
 class User < ActiveRecord::Base
-  attribute :name, :encrypt_string
+  attribute :name, :encrypted_string
 end
 ```
 

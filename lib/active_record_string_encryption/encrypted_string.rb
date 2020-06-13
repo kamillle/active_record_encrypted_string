@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ActiveRecordStringEncryption
-  class EncryptString < ActiveRecord::Type::String
+  class EncryptedString < ActiveRecord::Type::String
     class << self
       def key_len
         ActiveSupport::MessageEncryptor.key_len(ActiveRecordStringEncryption.configuration.cipher_alg)

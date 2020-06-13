@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['kamillle']
   spec.email         = ['32205171+kamillle@users.noreply.github.com']
 
-  spec.summary       = 'Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.'
-  spec.description   = 'Generates encrypt_string type that transparently encrypt and decrypt string value to ActiveRecord.'
+  spec.summary       = 'Generates encrypted_string type that transparently encrypt and decrypt string value to ActiveRecord.'
+  spec.description   = 'Generates encrypted_string type that transparently encrypt and decrypt string value to ActiveRecord.'
   spec.homepage      = 'https://github.com/kamillle/active_record_string_encryption'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
 
