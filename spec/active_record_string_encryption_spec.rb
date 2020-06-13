@@ -71,10 +71,10 @@ RSpec.describe ActiveRecordStringEncryption do
     let(:plain) { 'plain' }
 
     context 'pass null or empty string to encrypted' do
-      where :value do
+      where :value, :expected_value do
         [
-          nil,
-          ''
+          [nil, nil],
+          ['', '']
         ]
       end
 
@@ -86,12 +86,12 @@ RSpec.describe ActiveRecordStringEncryption do
 
           # check values stored in database
           expect(instance.read_attribute_before_type_cast(:plain)).to eq plain
-          expect(instance.read_attribute_before_type_cast(:encrypted)).to eq nil
+          expect(instance.read_attribute_before_type_cast(:encrypted)).to eq expected_value
 
           # check decryption
           new_instance = dummy_klass.find(instance.id)
           expect(new_instance.plain).to eq plain
-          expect(new_instance.encrypted).to eq nil
+          expect(new_instance.encrypted).to eq expected_value
         end
       end
     end

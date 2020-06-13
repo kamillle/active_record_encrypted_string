@@ -13,7 +13,7 @@ module ActiveRecordStringEncryption
       # expects same behavior as ActiveRecord::Type::String other than encryption
       # https://github.com/rails/rails/blob/5-0-stable/activemodel/lib/active_model/type/immutable_string.rb
       v = super(value)
-      encryptor.encrypt_and_sign(v) if v.present?
+      v.present? ? encryptor.encrypt_and_sign(v) : v
     end
 
     # ActiveRecord calls `deserialize` to convert values stored database to Ruby objects
@@ -21,7 +21,7 @@ module ActiveRecordStringEncryption
       # expects same behavior as ActiveRecord::Type::String other than decryption
       # https://github.com/rails/rails/blob/5-0-stable/activemodel/lib/active_model/type/value.rb#L21-L23
       v = super(value)
-      encryptor.decrypt_and_verify(v) if v.present?
+      v.present? ? encryptor.decrypt_and_verify(v) : v
     end
 
     private
