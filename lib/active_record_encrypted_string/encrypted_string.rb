@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-module ActiveRecordStringEncryption
+module ActiveRecordEncryptedString
   class EncryptedString < ActiveRecord::Type::String
     class << self
       def key_len
-        ActiveSupport::MessageEncryptor.key_len(ActiveRecordStringEncryption.configuration.cipher_alg)
+        ActiveSupport::MessageEncryptor.key_len(ActiveRecordEncryptedString.configuration.cipher_alg)
       end
     end
 
@@ -28,7 +28,7 @@ module ActiveRecordStringEncryption
 
     def encryptor
       # TODO: rotate
-      ActiveSupport::MessageEncryptor.new(secret, cipher: ActiveRecordStringEncryption.configuration.cipher_alg)
+      ActiveSupport::MessageEncryptor.new(secret, cipher: ActiveRecordEncryptedString.configuration.cipher_alg)
     end
 
     def secret
@@ -36,11 +36,11 @@ module ActiveRecordStringEncryption
     end
 
     def secret_key
-      ActiveRecordStringEncryption.configuration.secret_key
+      ActiveRecordEncryptedString.configuration.secret_key
     end
 
     def salt
-      ActiveRecordStringEncryption.configuration.salt
+      ActiveRecordEncryptedString.configuration.salt
     end
   end
 end

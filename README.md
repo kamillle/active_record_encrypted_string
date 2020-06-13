@@ -1,4 +1,4 @@
-# ActiveRecordStringEncryption
+# ActiveRecordEncryptedString
 Generates encrypted_string type that transparently encrypt and decrypt string value to ActiveRecord.
 
 Support ActiveRecord 5.0 and later.
@@ -8,7 +8,7 @@ Support ActiveRecord 5.0 and later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'active_record_string_encryption'
+gem 'active_record_encrypted_string'
 ```
 
 And then execute:
@@ -31,8 +31,8 @@ end
 Must configure secret_key and salt for encryption and decryption. You can also configure algorithm, pass the value to `cipher_alg`. `cipher_alg` has default value `aes-256-gcm` so you do not need to configure if you want to use `aes-256-gcm`.
 
 ```ruby
-# config/initializers/active_record_string_encryption.rb
-ActiveRecordStringEncryption.configure do |c|
+# config/initializers/active_record_encrypted_string.rb
+ActiveRecordEncryptedString.configure do |c|
   c.secret_key = ENV['ENCRYPTION_SECRET_KEY'],
   c.salt = ENV['ENCRYPTION_SALT'],
   c.cipher_alg = 'aes-256-gcm'
@@ -47,9 +47,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/active_record_string_encryption. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/active_record_string_encryption/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/active_record_encrypted_string. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/active_record_encrypted_string/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## Code of Conduct
 
-Everyone interacting in the ActiveRecordStringEncryption project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/active_record_string_encryption/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the ActiveRecordEncryptedString project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/active_record_encrypted_string/blob/master/CODE_OF_CONDUCT.md).

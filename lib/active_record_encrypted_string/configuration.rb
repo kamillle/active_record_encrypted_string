@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActiveRecordStringEncryption
+module ActiveRecordEncryptedString
   class Configuration
     attr_accessor :secret_key, :salt, :cipher_alg
 

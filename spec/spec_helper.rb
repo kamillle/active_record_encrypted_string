@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'active_record_string_encryption'
+require 'active_record_encrypted_string'
 require 'rspec-parameterized'
 
 Dir.glob('./spec/support/**/*.rb').sort.each { |f| require f }

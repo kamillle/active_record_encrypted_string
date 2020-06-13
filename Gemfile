@@ -2,5 +2,5 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in active_record_string_encryption.gemspec
+# Specify your gem's dependencies in active_record_encrypted_string.gemspec
 gemspec

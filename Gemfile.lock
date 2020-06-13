@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    active_record_string_encryption (0.1.0)
+    active_record_encrypted_string (0.1.0)
       activerecord (>= 5.0, < 7)
       activesupport (< 7)
 
@@ -105,7 +105,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_record_string_encryption!
+  active_record_encrypted_string!
   appraisal
   bundler
   rake

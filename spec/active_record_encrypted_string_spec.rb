@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiveRecordStringEncryption do
+RSpec.describe ActiveRecordEncryptedString do
   describe 'version' do
     it 'has a version number' do
-      expect(ActiveRecordStringEncryption::VERSION).not_to be nil
+      expect(ActiveRecordEncryptedString::VERSION).not_to be nil
     end
   end
 
@@ -13,11 +13,11 @@ RSpec.describe ActiveRecordStringEncryption do
 
     context 'do not pass cipher_alg' do
       subject(:configuration) do
-        ActiveRecordStringEncryption.configure do |c|
+        ActiveRecordEncryptedString.configure do |c|
           c.secret_key = secret_key
           c.salt = salt
         end
-        ActiveRecordStringEncryption.configuration
+        ActiveRecordEncryptedString.configuration
       end
 
       it do
@@ -29,12 +29,12 @@ RSpec.describe ActiveRecordStringEncryption do
 
     context 'pass cipher_alg' do
       subject(:configuration) do
-        ActiveRecordStringEncryption.configure do |c|
+        ActiveRecordEncryptedString.configure do |c|
           c.secret_key = secret_key
           c.salt = salt
           c.cipher_alg = cipher_alg
         end
-        ActiveRecordStringEncryption.configuration
+        ActiveRecordEncryptedString.configuration
       end
 
       let(:cipher_alg) { 'aes-256-cbc' }
@@ -54,7 +54,7 @@ RSpec.describe ActiveRecordStringEncryption do
         t.string :encrypted
       end
 
-      ActiveRecordStringEncryption.configure do |c|
+      ActiveRecordEncryptedString.configure do |c|
         c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
         c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
       end
