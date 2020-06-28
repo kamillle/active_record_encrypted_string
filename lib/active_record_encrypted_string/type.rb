@@ -8,6 +8,10 @@ module ActiveRecordEncryptedString
       end
     end
 
+    def initialize(**options)
+      @salt = options[:salt]
+    end
+
     # ActiveRecord calls `serialize` to convert Ruby objects to a format that can be understood by database
     def serialize(value)
       # expects same behavior as ActiveRecord::Type::String other than encryption
@@ -40,7 +44,7 @@ module ActiveRecordEncryptedString
     end
 
     def salt
-      ActiveRecordEncryptedString.configuration.salt
+      @salt || ActiveRecordEncryptedString.configuration.salt
     end
   end
 end

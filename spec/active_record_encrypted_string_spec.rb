@@ -48,37 +48,13 @@ RSpec.describe ActiveRecordEncryptedString do
   end
 
   describe 'encryption and decryption' do
-    before(:all) do
-      ActiveRecord::Base.connection.create_table('dummys') do |t|
-        t.string :plain
-        t.string :encrypted
-      end
-
-      ActiveRecordEncryptedString.configure do |c|
-        c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
-        c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
-      end
-    end
-
-    let(:dummy_klass) do
-      Class.new(ActiveRecord::Base) do
-        self.table_name = 'dummys'
-
-        attribute :encrypted, :encrypted_string
-      end
-    end
-    let(:instance) { dummy_klass.new(plain: plain, encrypted: value) }
-    let(:plain) { 'plain' }
-
-    context 'pass null or empty string to encrypted' do
+    shared_examples 'pass null or empty string to encrypted' do
       where :value, :expected_value do
         [
           [nil, nil],
           ['', '']
         ]
       end
-
-      subject { instance.save! }
 
       with_them do
         it 'return nil after encryption/description' do
@@ -96,7 +72,7 @@ RSpec.describe ActiveRecordEncryptedString do
       end
     end
 
-    context 'pass existing values to encrypted' do
+    shared_examples 'pass existing values to encrypted' do
       where :value do
         [
           ['test'],
@@ -109,8 +85,6 @@ RSpec.describe ActiveRecordEncryptedString do
           ['cat🐱cat🐱cat🐱cat']
         ]
       end
-
-      subject { instance.save! }
 
       with_them do
         it 'encrypt value without affecting other columns' do
@@ -129,6 +103,48 @@ RSpec.describe ActiveRecordEncryptedString do
           expect(new_instance.encrypted).to eq value.to_s
         end
       end
+    end
+
+    before(:all) do
+      ActiveRecord::Base.connection.create_table('dummys') do |t|
+        t.string :plain
+        t.string :encrypted
+      end
+
+      ActiveRecordEncryptedString.configure do |c|
+        c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
+        c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
+      end
+    end
+
+    subject { instance.save! }
+    let(:instance) { dummy_klass.new(plain: plain, encrypted: value) }
+    let(:plain) { 'plain' }
+
+    context 'encrypt with default salt' do
+      let(:dummy_klass) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = 'dummys'
+
+          attribute :encrypted, :encrypted_string
+        end
+      end
+
+      it_behaves_like 'pass null or empty string to encrypted'
+      it_behaves_like 'pass existing values to encrypted'
+    end
+
+    context 'encrypt with another salt' do
+      let(:dummy_klass) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = 'dummys'
+
+          attribute :encrypted, :encrypted_string, salt: 'another_salt'
+        end
+      end
+
+      it_behaves_like 'pass null or empty string to encrypted'
+      it_behaves_like 'pass existing values to encrypted'
     end
   end
 end
