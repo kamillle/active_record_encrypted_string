@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    active_record_encrypted_string (1.0.0)
+    active_record_encrypted_string (1.1.0)
       activerecord (>= 5.0, < 7)
       activesupport (< 7)
 
