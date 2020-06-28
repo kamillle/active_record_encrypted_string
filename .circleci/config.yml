@@ -11,7 +11,7 @@ common: &common
 
     - restore_cache:
         keys:
-          - bundle-v1-{{ checksum "active_record_string_encryption.gemspec" }}
+          - bundle-v1-{{ checksum "active_record_encrypted_string.gemspec" }}
           - bundle-v1-
 
     - run:
@@ -26,9 +26,9 @@ common: &common
           bundle exec appraisal ${RAILS_VERSION} bundle clean
 
     - save_cache:
-        key: bundle-v1-{{ checksum "active_record_string_encryption.gemspec" }}
+        key: bundle-v1-{{ checksum "active_record_encrypted_string.gemspec" }}
         paths:
-          - active_record_string_encryption/gemfiles/.bundle
+          - active_record_encrypted_string/gemfiles/.bundle
 
     - run:
         name: Run tests
