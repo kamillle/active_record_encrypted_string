@@ -1,3 +1,11 @@
+## Unreleased
+
+- [#x](https://github.com/kamillle/active_record_encrypted_string/pull/x) Please describe
+
+## 1.2.0
+
+- [#7](https://github.com/kamillle/active_record_encrypted_string/pull/7) Support Rails v6.1.0rc1
+
 ## 1.1.0
 
 - Support encrypt with other salts
