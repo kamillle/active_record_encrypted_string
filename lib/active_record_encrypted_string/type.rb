@@ -36,6 +36,10 @@ module ActiveRecordEncryptedString
       v.present? ? encryptor.decrypt_and_verify(v) : v
     end
 
+    def changed_in_place?(raw_old_value, new_value)
+      deserialize(raw_old_value) != new_value
+    end
+
     private
 
     def encryptor
