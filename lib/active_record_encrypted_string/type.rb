@@ -8,6 +8,8 @@ module ActiveRecordEncryptedString
       end
     end
 
+    attr_reader :last_serialized_value, :last_encrypted_value
+
     def initialize(**options)
       @salt = options[:salt]
     end
@@ -16,8 +18,14 @@ module ActiveRecordEncryptedString
     def serialize(value)
       # expects same behavior as ActiveRecord::Type::String other than encryption
       # https://github.com/rails/rails/blob/5-0-stable/activemodel/lib/active_model/type/immutable_string.rb
+
+      # serialize could be called more than once and therefore it would change the encryption value
+      # even if value is the same as the last call
+      return last_encrypted_value if last_serialized_value == value
+
+      @last_serialized_value = value
       v = super(value)
-      v.present? ? encryptor.encrypt_and_sign(v) : v
+      @last_encrypted_value = v.present? ? encryptor.encrypt_and_sign(v) : v
     end
 
     # ActiveRecord calls `deserialize` to convert values stored database to Ruby objects

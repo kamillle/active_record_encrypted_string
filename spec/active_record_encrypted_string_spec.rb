@@ -121,6 +121,22 @@ RSpec.describe ActiveRecordEncryptedString do
     let(:instance) { dummy_klass.new(plain: plain, encrypted: value) }
     let(:plain) { 'plain' }
 
+    context 'no changes encryption' do
+      let(:value) { :encrypted }
+      let(:dummy_klass) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = 'dummys'
+
+          attribute :encrypted, :encrypted_string
+        end
+      end
+
+      it 'should not update encrypted when not changed' do
+        instance.save!
+        expect { instance.save! }.not_to change { instance.read_attribute_before_type_cast(:encrypted) } # rubocop:disable Lint/AmbiguousBlockAssociation
+      end
+    end
+
     context 'encrypt with default salt' do
       let(:dummy_klass) do
         Class.new(ActiveRecord::Base) do
