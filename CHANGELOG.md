@@ -2,6 +2,12 @@
 
 - [#x](https://github.com/kamillle/active_record_encrypted_string/pull/x) Please describe
 
+## 1.2.1
+
+- [#13](https://github.com/kamillle/active_record_encrypted_string/pull/13) Replace to rspec-parameterized-context
+- [#12](https://github.com/kamillle/active_record_encrypted_string/pull/12) Introduce pry-byebug
+- [#11](https://github.com/kamillle/active_record_encrypted_string/pull/11) Ignore Gemfile.lock
+
 ## 1.2.0
 
 - [#7](https://github.com/kamillle/active_record_encrypted_string/pull/7) Support Rails v6.1.0rc1
