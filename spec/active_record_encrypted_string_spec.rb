@@ -49,58 +49,62 @@ RSpec.describe ActiveRecordEncryptedString do
 
   describe 'encryption and decryption' do
     shared_examples 'pass null or empty string to encrypted' do
-      where :value, :expected_value do
-        [
-          [nil, nil],
-          ['', '']
-        ]
-      end
+      parameterized do
+        where :value, :expected_value, size: 2 do
+          [
+            [nil, nil],
+            ['', '']
+          ]
+        end
 
-      with_them do
-        it 'return nil after encryption/description' do
-          subject
+        with_them do
+          it 'return nil after encryption/description' do
+            subject
 
-          # check values stored in database
-          expect(instance.read_attribute_before_type_cast(:plain)).to eq plain
-          expect(instance.read_attribute_before_type_cast(:encrypted)).to eq expected_value
+            # check values stored in database
+            expect(instance.read_attribute_before_type_cast(:plain)).to eq plain
+            expect(instance.read_attribute_before_type_cast(:encrypted)).to eq expected_value
 
-          # check decryption
-          new_instance = dummy_klass.find(instance.id)
-          expect(new_instance.plain).to eq plain
-          expect(new_instance.encrypted).to eq expected_value
+            # check decryption
+            new_instance = dummy_klass.find(instance.id)
+            expect(new_instance.plain).to eq plain
+            expect(new_instance.encrypted).to eq expected_value
+          end
         end
       end
     end
 
     shared_examples 'pass existing values to encrypted' do
-      where :value do
-        [
-          ['test'],
-          ['with_underscore'],
-          ['with-hyphen'],
-          ['with space'],
-          ['123'],
-          [123],
-          ['🐱🐱🐱'],
-          ['cat🐱cat🐱cat🐱cat']
-        ]
-      end
-
-      with_them do
-        it 'encrypt value without affecting other columns' do
-          subject
-
-          expect(instance.read_attribute_before_type_cast(:plain)).to eq plain
-          expect(instance.read_attribute_before_type_cast(:encrypted)).to_not eq value
-          expect(instance.read_attribute_before_type_cast(:encrypted).bytesize).to be > value.to_s.bytesize
+      parameterized do
+        where :value, size: 8 do
+          [
+            ['test'],
+            ['with_underscore'],
+            ['with-hyphen'],
+            ['with space'],
+            ['123'],
+            [123],
+            ['🐱🐱🐱'],
+            ['cat🐱cat🐱cat🐱cat']
+          ]
         end
 
-        it 'decrypt value without affecting other columns' do
-          subject
+        with_them do
+          it 'encrypt value without affecting other columns' do
+            subject
 
-          new_instance = dummy_klass.find(instance.id)
-          expect(new_instance.plain).to eq plain
-          expect(new_instance.encrypted).to eq value.to_s
+            expect(instance.read_attribute_before_type_cast(:plain)).to eq plain
+            expect(instance.read_attribute_before_type_cast(:encrypted)).to_not eq value
+            expect(instance.read_attribute_before_type_cast(:encrypted).bytesize).to be > value.to_s.bytesize
+          end
+
+          it 'decrypt value without affecting other columns' do
+            subject
+
+            new_instance = dummy_klass.find(instance.id)
+            expect(new_instance.plain).to eq plain
+            expect(new_instance.encrypted).to eq value.to_s
+          end
         end
       end
     end
