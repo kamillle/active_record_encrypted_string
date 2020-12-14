@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'active_record_encrypted_string'
-require 'rspec-parameterized'
+require 'rspec-parameterized-context'
 require 'pry-byebug'
 
 Dir.glob('./spec/support/**/*.rb').sort.each { |f| require f }
