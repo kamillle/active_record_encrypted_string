@@ -2,6 +2,12 @@
 
 - [#x](https://github.com/kamillle/active_record_encrypted_string/pull/x) Please describe
 
+## 1.3.0
+
+- [#13](https://github.com/kamillle/active_record_encrypted_string/pull/16) Override changed_in_place? for handling changes
+
+   Thanks @ericproulx :heart:
+
 ## 1.2.1
 
 - [#13](https://github.com/kamillle/active_record_encrypted_string/pull/13) Replace to rspec-parameterized-context
