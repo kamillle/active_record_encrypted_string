@@ -39,6 +39,19 @@ ActiveRecordEncryptedString.configure do |c|
 end
 ```
 
+You can set custom error handler to deal with decryption error.
+
+```ruby
+# config/initializers/active_record_encrypted_string.rb
+ActiveRecordEncryptedString.configure do |c|
+  c.secret_key = ENV['ENCRYPTION_SECRET_KEY'],
+  c.salt = ENV['ENCRYPTION_SALT'],
+  c.decryption_error_handler = ->(exception, value) {
+    raise exception, value
+  }
+end
+```
+
 If you want to encrypt values with other salts, try it out!
 
 ```ruby

@@ -26,6 +26,13 @@ module ActiveRecordEncryptedString
       # https://github.com/rails/rails/blob/5-0-stable/activemodel/lib/active_model/type/value.rb#L21-L23
       v = super(value)
       v.present? ? encryptor.decrypt_and_verify(v) : v
+    rescue => exception
+      if ActiveRecordEncryptedString.configuration.defined_decryption_error_handler?
+        ActiveRecordEncryptedString.configuration.decryption_error_handler.call(exception, value)
+      else
+        # just return value if error handler is not defined
+        v
+      end
     end
 
     def changed_in_place?(raw_old_value, new_value)

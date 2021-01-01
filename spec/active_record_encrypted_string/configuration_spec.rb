@@ -47,4 +47,52 @@ RSpec.describe ActiveRecordEncryptedString::Configuration do
       it { is_expected.to eq cipher_alg }
     end
   end
+
+  describe '#defined_decryption_error_handler?' do
+    context 'do not pass decryption_error_handler' do
+      subject do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = 'secret_key'
+          c.salt = 'salt'
+        end
+        ActiveRecordEncryptedString.configuration.defined_decryption_error_handler?
+      end
+
+      it { is_expected.to eq false }
+    end
+
+    context 'passes decryption_error_handler that does not have call interface' do
+      subject(:configuration) do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = 'secret_key'
+          c.salt = 'salt'
+          c.decryption_error_handler = handler
+        end
+        ActiveRecordEncryptedString.configuration.defined_decryption_error_handler?
+      end
+      let(:handler) do
+        puts 'this is handler'
+      end
+
+      it { is_expected.to eq false }
+    end
+
+    context 'passes decryption_error_handler that has call interface' do
+      subject(:configuration) do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = 'secret_key'
+          c.salt = 'salt'
+          c.decryption_error_handler = handler
+        end
+        ActiveRecordEncryptedString.configuration.defined_decryption_error_handler?
+      end
+      let(:handler) do
+        ->(exception, value) {
+          value
+        }
+      end
+
+      it { is_expected.to eq true }
+    end
+  end
 end

@@ -68,14 +68,9 @@ RSpec.describe ActiveRecordEncryptedString::Type do
         t.string :plain
         t.string :encrypted
       end
-
-      ActiveRecordEncryptedString.configure do |c|
-        c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
-        c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
-      end
     end
 
-    after :all do
+    after(:all) do
       ActiveRecord::Base.connection.drop_table('dummys')
     end
 
@@ -84,6 +79,13 @@ RSpec.describe ActiveRecordEncryptedString::Type do
     let(:plain) { 'plain' }
 
     context 'encrypt with default salt' do
+      before do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
+          c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
+        end
+      end
+
       let(:dummy_klass) do
         Class.new(ActiveRecord::Base) do
           self.table_name = 'dummys'
@@ -97,6 +99,13 @@ RSpec.describe ActiveRecordEncryptedString::Type do
     end
 
     context 'encrypt with another salt' do
+      before do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
+          c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
+        end
+      end
+
       let(:dummy_klass) do
         Class.new(ActiveRecord::Base) do
           self.table_name = 'dummys'
@@ -107,6 +116,75 @@ RSpec.describe ActiveRecordEncryptedString::Type do
 
       it_behaves_like 'pass null or empty string to encrypted'
       it_behaves_like 'pass existing values to encrypted'
+    end
+
+    context 'set error handler and fail decryption' do
+      before do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
+          c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
+          c.decryption_error_handler = error_handler
+        end
+
+        encrypter_mock = instance_double(ActiveSupport::MessageEncryptor)
+        allow(ActiveSupport::MessageEncryptor).to receive(:new).and_return(encrypter_mock)
+        allow(encrypter_mock).to receive(:decrypt_and_verify).and_raise(StandardError)
+        allow(encrypter_mock).to receive(:encrypt_and_sign).and_return(value)
+      end
+
+      after do
+        ActiveRecordEncryptedString.configure do |c|
+          c.decryption_error_handler = nil
+        end
+      end
+
+      let(:error_handler) do
+        ->(exception, value) {
+          raise StandardError, error_msg
+        }
+      end
+      let(:error_msg) { "raise #{StandardError} and value is #{value}" }
+      let(:dummy_klass) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = 'dummys'
+
+          attribute :encrypted, :encrypted_string
+        end
+      end
+      let(:value) { 'encrypted value' }
+
+      it 'call error_handler' do
+        subject
+        expect { instance.encrypted }.to raise_error(StandardError, error_msg)
+      end
+    end
+
+    context 'does not set error handler and fail decryption' do
+      before do
+        ActiveRecordEncryptedString.configure do |c|
+          c.secret_key = '5b13d146feab83d630313732178c2b782e9eb54f3db492b24b2afc084a6e6cc38aa61d100230426890df16f8f0440454eeeb9029beab5b47b2490e8a375657f8'
+          c.salt = 'de71bee5d2dc788bec68f6cd691480216c2804bb6aacef8966a14b3a430f9803bb2530d32da366c4d3bd46deb851a494b57de423892bd554e4a8e338f2a06da8'
+        end
+
+        encrypter_mock = instance_double(ActiveSupport::MessageEncryptor)
+        allow(ActiveSupport::MessageEncryptor).to receive(:new).and_return(encrypter_mock)
+        allow(encrypter_mock).to receive(:decrypt_and_verify).and_raise(StandardError)
+        allow(encrypter_mock).to receive(:encrypt_and_sign).and_return(value)
+      end
+
+      let(:dummy_klass) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = 'dummys'
+
+          attribute :encrypted, :encrypted_string
+        end
+      end
+      let(:value) { 'encrypted value' }
+
+      it 'call error_handler' do
+        subject
+        expect { instance.encrypted }.to_not raise_error
+      end
     end
   end
 
