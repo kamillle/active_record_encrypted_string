@@ -3,7 +3,7 @@ name: Rspec
 on: pull_request
 
 jobs:
-  rspec:
+  rspec-on-ruby2:
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,7 +15,7 @@ jobs:
           - 6_0_stable
           - 6_1_stable
 
-    name: Rails ${{ matrix.rails }}
+    name: Rails ${{ matrix.rails }} on Ruby 2.7
 
     steps:
     - uses: actions/checkout@v2
@@ -23,6 +23,38 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
+
+    - name: Install dependencies
+      run: |
+        bundle lock
+        bundle config --local path '.bundle'
+        bundle check || bundle install --jobs 4
+
+        bundle exec appraisal ${{ matrix.rails }} bundle lock
+        bundle exec appraisal ${{ matrix.rails }} bundle install --jobs 4
+
+    - name: Run rspec
+      env:
+        CI: 1
+      run: bundle exec appraisal ${{ matrix.rails }} rspec
+
+  rspec-on-ruby3:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        rails:
+          - 6_0_stable
+          - 6_1_stable
+
+    name: Rails ${{ matrix.rails }} on Ruby 3
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
 
     - name: Install dependencies
       run: |
