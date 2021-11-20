@@ -2,6 +2,11 @@
 
 - [#x](https://github.com/kamillle/active_record_encrypted_string/pull/x) Please describe
 
+## 1.3.1
+
+- [#23](https://github.com/kamillle/active_record_encrypted_string/pull/23) Testing by Ruby3
+- [#20](https://github.com/kamillle/active_record_encrypted_string/pull/20) Run tests by GitHub Actions
+
 ## 1.3.0
 
 - [#13](https://github.com/kamillle/active_record_encrypted_string/pull/16) Override changed_in_place? for handling changes
