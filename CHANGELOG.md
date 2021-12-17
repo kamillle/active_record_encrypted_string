@@ -2,6 +2,10 @@
 
 - [#x](https://github.com/kamillle/active_record_encrypted_string/pull/x) Please describe
 
+## 1.4.0
+
+- [#24](https://github.com/kamillle/active_record_encrypted_string/pull/24) Support Rails7
+
 ## 1.3.1
 
 - [#23](https://github.com/kamillle/active_record_encrypted_string/pull/23) Testing by Ruby3
