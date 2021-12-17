@@ -20,3 +20,7 @@ end
 appraise '6_1_stable' do
   gem 'activerecord', '~> 6-1-stable'
 end
+
+appraise '7_0_stable' do
+  gem 'activerecord', '~> 7-0-stable'
+end

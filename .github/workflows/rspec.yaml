@@ -14,6 +14,7 @@ jobs:
           - 5_2_stable
           - 6_0_stable
           - 6_1_stable
+          - 7_0_stable
 
     name: Rails ${{ matrix.rails }} on Ruby 2.7
 
@@ -46,6 +47,7 @@ jobs:
         rails:
           - 6_0_stable
           - 6_1_stable
+          - 7_0_stable
 
     name: Rails ${{ matrix.rails }} on Ruby 3
 
